@@ -1,0 +1,333 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMp0STAcRiXJ4RONKadDcDO",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Bikash0003/Torrens_uni_practive/blob/main/project_1_with_mango_DB\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "as_iNJxi4b4O",
+        "outputId": "01115ec9-bb1e-4ff8-91e7-6c421978c7d2"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Collecting pymongo\n",
+            "  Downloading pymongo-4.17.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (10 kB)\n",
+            "Collecting dnspython<3.0.0,>=2.6.1 (from pymongo)\n",
+            "  Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)\n",
+            "Downloading pymongo-4.17.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.8 MB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m1.8/1.8 MB\u001b[0m \u001b[31m6.1 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hDownloading dnspython-2.8.0-py3-none-any.whl (331 kB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m331.1/331.1 kB\u001b[0m \u001b[31m18.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hInstalling collected packages: dnspython, pymongo\n",
+            "Successfully installed dnspython-2.8.0 pymongo-4.17.0\n"
+          ]
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "{'ok': 1}"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 3
+        }
+      ],
+      "source": [
+        "!pip install pymongo\n",
+        "from pymongo import MongoClient\n",
+        "\n",
+        "uri = \"mongodb+srv://bda_student:bda_student@bda.oo6vzod.mongodb.net/\"\n",
+        "\n",
+        "client = MongoClient(uri)\n",
+        "\n",
+        "# Test the connection.\n",
+        "# If the connection works, MongoDB should return {'ok': 1.0}.\n",
+        "client.admin.command(\"ping\")"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "f18ae6c5",
+        "outputId": "9b697276-8acf-4ada-c9e4-3e76a5e22073"
+      },
+      "source": [
+        "# Replace 'your_database_name' with the actual name of your database\n",
+        "db = client['your_database_name']\n",
+        "\n",
+        "# Replace 'your_collection_name' with the actual name of your collection\n",
+        "collection = db['your_collection_name']\n",
+        "\n",
+        "# Find all documents in the collection and convert the cursor to a list\n",
+        "documents = list(collection.find({}))\n",
+        "\n",
+        "# Display the first 5 documents\n",
+        "print(\"First 5 documents in the collection:\")\n",
+        "for doc in documents[:5]:\n",
+        "    print(doc)"
+      ],
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "First 5 documents in the collection:\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "c9b5e6ec",
+        "outputId": "1c4f6872-78a0-472c-c900-1b2cb5cc9ac6"
+      },
+      "source": [
+        "# List all database names\n",
+        "database_names = client.list_database_names()\n",
+        "print(\"Available database names:\")\n",
+        "for db_name in database_names:\n",
+        "    print(f\"- {db_name}\")"
+      ],
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Available database names:\n",
+            "- BDA601\n",
+            "- sample_mflix\n",
+            "- admin\n",
+            "- local\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "b65cdb31",
+        "outputId": "3447c11b-d591-4dc2-f4ef-ccabcc69db3b"
+      },
+      "source": [
+        "# Select the 'BDA601' database\n",
+        "db = client['BDA601']\n",
+        "\n",
+        "# List all collection names in the 'BDA601' database\n",
+        "collection_names = db.list_collection_names()\n",
+        "print(\"Collections in 'BDA601' database:\")\n",
+        "for col_name in collection_names:\n",
+        "    print(f\"- {col_name}\")"
+      ],
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Collections in 'BDA601' database:\n",
+            "- attendancy\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "0c4cf487",
+        "outputId": "fd8cd6cd-68ac-4993-c141-0fdf1b83f825"
+      },
+      "source": [
+        "# Select the 'attendancy' collection\n",
+        "collection = client['BDA601']['attendancy']\n",
+        "\n",
+        "# Find the first 5 documents in the collection\n",
+        "first_five_documents = list(collection.find({}).limit(5))\n",
+        "\n",
+        "print(\"First 5 documents in the 'attendancy' collection:\")\n",
+        "for doc in first_five_documents:\n",
+        "    print(doc)"
+      ],
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "First 5 documents in the 'attendancy' collection:\n",
+            "{'_id': ObjectId('6a259fa8a124b465f97a333c'), 'student_id': 'TEST001', 'student_name': 'Test Student', 'email': 'test@example.com', 'campus': 'Online', 'program': 'Business/Data Analytics', 'class_date': '2026-06-08', 'module': 'MongoDB and PyMongo', 'attendance_time': datetime.datetime(2026, 6, 7, 16, 43, 20, 213000), 'comments': 'This is a test attendance record.', 'created_at': datetime.datetime(2026, 6, 7, 16, 43, 20, 213000)}\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "4803fd38"
+      },
+      "source": [
+        "import datetime"
+      ],
+      "execution_count": 8,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "476dc9ef"
+      },
+      "source": [
+        "# Get current date and time\n",
+        "current_time = datetime.datetime.now()\n",
+        "today_date_str = current_time.strftime('%Y-%m-%d')"
+      ],
+      "execution_count": 9,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "80f413a9"
+      },
+      "source": [
+        "# Define the new attendance record\n",
+        "new_record = {\n",
+        "    'student_id': 'A00208755',\n",
+        "    'student_name': 'Bikashpoudel',\n",
+        "    'email': 'Bikash.poudel@student.torrens.edu.au',\n",
+        "    'campus': 'Online', # Assuming 'Online' as per previous record\n",
+        "    'program': 'Business/Data Analytics', # Assuming 'Business/Data Analytics' as per previous record\n",
+        "    'class_date': today_date_str,\n",
+        "    'module': 'MongoDB and PyMongo', # Assuming 'MongoDB and PyMongo' as per previous record\n",
+        "    'attendance_time': current_time,\n",
+        "    'comments': 'Attendance record added by user request.',\n",
+        "    'created_at': current_time\n",
+        "}"
+      ],
+      "execution_count": 10,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "640703d0",
+        "outputId": "5421989a-8ede-416b-c01d-e0932e364f3a"
+      },
+      "source": [
+        "# Insert the new record into the 'attendancy' collection\n",
+        "insert_result = collection.insert_one(new_record)\n",
+        "\n",
+        "print(f\"New document inserted with ID: {insert_result.inserted_id}\")"
+      ],
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "New document inserted with ID: 6a276bfabda4f1014e6b6a8d\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "1fe890e3"
+      },
+      "source": [
+        "To verify the insertion, let's display the first document again. If the previous document was the only one, this will now show the new one. If there were multiple, we might need to query specifically for the new ID or fetch more documents."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ccc79892",
+        "outputId": "b1f64b2d-7086-4f20-c465-e51b48a1d6e2"
+      },
+      "source": [
+        "# Display the first document to verify (or query for the new one if needed)\n",
+        "verified_document = collection.find_one({'_id': insert_result.inserted_id})\n",
+        "\n",
+        "if verified_document:\n",
+        "    print(\"\\nNewly inserted document:\")\n",
+        "    print(verified_document)\n",
+        "else:\n",
+        "    print(\"\\nCould not retrieve the newly inserted document.\")"
+      ],
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Newly inserted document:\n",
+            "{'_id': ObjectId('6a276bfabda4f1014e6b6a8d'), 'student_id': 'A00208755', 'student_name': 'Bikashpoudel', 'email': 'Bikash.poudel@student.torrens.edu.au', 'campus': 'Online', 'program': 'Business/Data Analytics', 'class_date': '2026-06-09', 'module': 'MongoDB and PyMongo', 'attendance_time': datetime.datetime(2026, 6, 9, 1, 27, 21, 179000), 'comments': 'Attendance record added by user request.', 'created_at': datetime.datetime(2026, 6, 9, 1, 27, 21, 179000)}\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "g2PIhaRI7Ofg"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
